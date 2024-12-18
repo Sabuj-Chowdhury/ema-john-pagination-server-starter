@@ -32,7 +32,16 @@ async function run() {
     // ***************GET**********************
     // all products API
     app.get("/products", async (req, res) => {
-      const result = await productCollection.find().toArray();
+      // console.log(req.query);
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
+      // console.log(page, size);
+
+      const result = await productCollection
+        .find()
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(result);
     });
     // total number of products
